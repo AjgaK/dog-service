@@ -18,7 +18,7 @@ public class DogController {
         return dogService.getAllDogs();
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public Dog getDogById(@PathVariable Long id) {
         return dogService.getDogById(id);
     }
@@ -28,12 +28,12 @@ public class DogController {
         return dogService.createDog(dog);
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public Dog updateDog(@PathVariable Long id, @RequestBody Dog dog) {
         return dogService.updateDog(id, dog);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public void deleteDog(@PathVariable Long id) {
         dogService.deleteDog(id);
     }
