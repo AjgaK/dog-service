@@ -1,7 +1,6 @@
 package iga.dogservice.controller;
 
 import iga.dogservice.model.Dog;
-import iga.dogservice.repository.DogRepository;
 import iga.dogservice.service.DogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
