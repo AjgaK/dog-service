@@ -1,5 +1,6 @@
 package iga.dogservice.service;
 
+import iga.dogservice.exception.DogNotFoundException;
 import iga.dogservice.model.Dog;
 import iga.dogservice.repository.DogRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class DogService {
 
     public Dog getDogById(Long id) {
         return dogRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Dog with id " + id + " not found"));
+                orElseThrow(() -> new DogNotFoundException(id));
     }
 
     public Dog createDog(Dog dog) {

@@ -2,6 +2,7 @@ package iga.dogservice.controller;
 
 import iga.dogservice.model.Dog;
 import iga.dogservice.service.DogService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +25,12 @@ public class DogController {
     }
 
     @PostMapping
-    public Dog createDog(@RequestBody Dog dog) {
+    public Dog createDog(@Valid @RequestBody Dog dog) {
         return dogService.createDog(dog);
     }
 
     @PutMapping("/{id}")
-    public Dog updateDog(@PathVariable Long id, @RequestBody Dog dog) {
+    public Dog updateDog(@PathVariable Long id, @Valid @RequestBody Dog dog) {
         return dogService.updateDog(id, dog);
     }
 
