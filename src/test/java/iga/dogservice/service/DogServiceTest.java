@@ -3,7 +3,6 @@ package iga.dogservice.service;
 import iga.dogservice.exception.DogNotFoundException;
 import iga.dogservice.model.Dog;
 import iga.dogservice.repository.DogRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
