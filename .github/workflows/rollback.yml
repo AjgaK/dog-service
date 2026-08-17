@@ -1,0 +1,17 @@
+name: Rollback Dog Service
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rollback:
+    runs-on: self-hosted
+
+    steps:
+      - name: Rollback
+        run: |
+          kubectl rollout undo deployment/dog-service -n adoption-system
+
+      - name: Wait for rollback
+        run: |
+          kubectl rollout status deployment/dog-service -n adoption-system --timeout=120s
