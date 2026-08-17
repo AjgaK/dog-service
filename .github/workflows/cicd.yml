@@ -1,10 +1,16 @@
-name: Dog Service CI
+name: Dog Service CI/CD
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,16 +28,19 @@ jobs:
         run: mvn clean test
 
       - name: Login to Docker Hub
+        if: github.event_name == 'push'
         uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
+        if: github.event_name == 'push'
         run: |
           docker build -t ajgak/dog-service:${{ github.sha }} .
 
       - name: Scan Docker image with Trivy
+        if: github.event_name == 'push'
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: 'ajgak/dog-service:${{ github.sha }}'
@@ -41,5 +50,20 @@ jobs:
           ignore-unfixed: true
 
       - name: Push Docker image
+        if: github.event_name == 'push'
         run: |
           docker push ajgak/dog-service:${{ github.sha }}
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy Dog Service
+        run: |
+          kubectl set image deployment/dog-service dog-service=ajgak/dog-service:${{ github.sha }} -n adoption-system
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/dog-service -n adoption-system --timeout=120s
