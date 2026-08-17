@@ -1,0 +1,24 @@
+name: Deploy Dog Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Docker image tag
+        required: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Check Kubernetes access
+        run: kubectl get nodes
+
+      - name: Deploy Dog Service
+        run: |
+          kubectl set image deployment/dog-service dog-service=ajgak/dog-service:${{ inputs.image_tag }} -n adoption-system
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/dog-service -n adoption-system --timeout=120s
