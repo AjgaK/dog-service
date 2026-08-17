@@ -34,11 +34,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         if: github.event_name == 'push'
-        uses: docker/build-push-action@v7
+        run: |
+          docker build -t ajgak/dog-service:${{ github.sha }} .
+          
+      - name: Scan Docker image with Trivy
+        if: github.event_name == 'push'
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          context: .
-          push: true
-          tags: |
-            ajgak/dog-service:${{ github.sha }}
+          image-ref: 'ajgak/dog-service:${{ github.sha }}'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+
+      - name: Push Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker push ajgak/dog-service:${{ github.sha }}
