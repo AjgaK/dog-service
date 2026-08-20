@@ -17,7 +17,8 @@ public class VersionController {
     public Map<String, String> getVersion() {
         return Map.of(
                 "service", "dog-service",
-                "version", version
+                "version", version,
+                "test", "test"
         );
     }
 }
