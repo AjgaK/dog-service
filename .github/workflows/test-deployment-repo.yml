@@ -1,0 +1,21 @@
+name: Test Deployment Repository Access
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout deployment repository
+        uses: actions/checkout@v5
+        with:
+          repository: AjgaK/adoption-system-deployment
+          token: ${{ secrets.DEPLOYMENT_REPO_TOKEN }}
+          path: deployment
+
+      - name: Show deployment files
+        run: |
+          ls -la deployment
+          ls -la deployment/k8s
