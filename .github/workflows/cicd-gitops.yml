@@ -27,7 +27,7 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: mvn clean test
+        run: mvn clean verify
 
       - name: Login to Docker Hub
         if: github.event_name == 'push'
