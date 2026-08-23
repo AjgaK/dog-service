@@ -4,10 +4,6 @@ name: Dog Service CI/CD GitOps
 #  push:
 #    branches:
 #      - main
-#
-#  pull_request:
-#    branches:
-#      - main
 on:
   workflow_dispatch:
 
@@ -30,14 +26,12 @@ jobs:
         run: mvn clean verify
 
       - name: Login to Docker Hub
-        if: github.event_name == 'push'
         uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.event_name == 'push'
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -46,7 +40,6 @@ jobs:
             ajgak/dog-service:${{ github.sha }}
 
       - name: Checkout deployment repository
-        if: github.event_name == 'push'
         uses: actions/checkout@v5
         with:
           repository: AjgaK/adoption-system-deployment
@@ -54,12 +47,10 @@ jobs:
           path: deployment
 
       - name: Update Dog Service image
-        if: github.event_name == 'push'
         run: |
           sed -i "s|image: ajgak/dog-service:.*|image: ajgak/dog-service:${{ github.sha }}|" deployment/k8s/dog-service.yaml
 
       - name: Commit deployment manifest
-        if: github.event_name == 'push'
         working-directory: deployment
         run: |
           git config user.name "github-actions"
