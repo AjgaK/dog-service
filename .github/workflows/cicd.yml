@@ -1,19 +1,19 @@
 name: Dog Service CI/CD Push-based
 
-#on:
-#  push:
-#    branches:
-#      - main
-#
-#  pull_request:
-#    branches:
-#      - main
 on:
-  workflow_dispatch:
-    inputs:
-      image_tag:
-        description: Docker image tag
-        required: true
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      image_tag:
+#        description: Docker image tag
+#        required: true
 
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: mvn clean test
+        run: mvn clean verify
 
       - name: Login to Docker Hub
         if: github.event_name == 'push'
