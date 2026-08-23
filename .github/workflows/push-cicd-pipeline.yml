@@ -1,16 +1,13 @@
 name: Dog Service CI/CD Push-based
 
-on:
-  push:
-    branches:
-      - main
-
 #on:
-#  workflow_dispatch:
-#    inputs:
-#      image_tag:
-#        description: Docker image tag
-#        required: true
+#  push:
+#    branches:
+#      - main
+
+on:
+  workflow_dispatch:
+
 
 
 jobs:
