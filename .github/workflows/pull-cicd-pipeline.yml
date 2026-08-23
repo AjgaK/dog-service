@@ -1,4 +1,4 @@
-name: Dog Service CI/CD GitOps
+name: Dog Service CI/CD Pull-based
 
 #on:
 #  push:
