@@ -18,7 +18,7 @@ public class VersionController {
         return Map.of(
                 "service", "dog-service",
                 "version", version,
-                "test", "push deployment rollback test second run"
+                "test", "push deployment rollback test third run"
         );
     }
 }
